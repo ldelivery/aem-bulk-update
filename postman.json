@@ -7,19 +7,122 @@
 	},
 	"item": [
 		{
-			"name": "Bulk Edit SEO Meta Description",
+			"name": "Step 1 - Extract pages & properties from AEM",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const items = pm.response.json().hits",
+							"const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here",
+							"const header = Object.keys(items[0])",
+							"const csv = [",
+							"  header.join(','), // header row first",
+							"  ...items.map(row => header.map(fieldName => row[fieldName], replacer).join(','))",
+							"].join('\\n')",
+							"",
+							"console.log(csv)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"auth": {
-					"type": "basic",
-					"basic": [
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{AEMURL}}/bin/querybuilder.json?type=cq:Page&path=/content/we-retail/language-masters/en&p.limit=-1",
+					"host": [
+						"{{AEMURL}}"
+					],
+					"path": [
+						"bin",
+						"querybuilder.json"
+					],
+					"query": [
 						{
-							"key": "password",
-							"value": "admin",
-							"type": "string"
+							"key": "type",
+							"value": "cq:Page"
 						},
 						{
-							"key": "username",
-							"value": "admin",
+							"key": "path",
+							"value": "/content/we-retail/language-masters/en"
+						},
+						{
+							"key": "p.limit",
+							"value": "-1"
+						},
+						{
+							"key": "property.value",
+							"value": "%/de/%",
+							"disabled": true
+						},
+						{
+							"key": "property.operation",
+							"value": "like",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 2 - Transform page titles into meta descriptions using ChatGPT",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check if it's the first iteration",
+							"if (pm.info.iteration === 0) {",
+							"    // Reset the variable",
+							"    pm.collectionVariables.set(\"tmpDataStep2\", \"[]\");",
+							"}",
+							"",
+							"let tmpDataStep2 = pm.collectionVariables.get(\"tmpDataStep2\");",
+							"if(tmpDataStep2) {",
+							"    tmpDataStep2 = JSON.parse(tmpDataStep2);",
+							"} else {",
+							"    tmpDataStep2 = [];",
+							"}",
+							"let requestBody = JSON.parse(pm.request.body.raw);",
+							"let path = pm.iterationData.get('path');",
+							"let title = pm.iterationData.get('title');",
+							"",
+							"",
+							"tmpDataStep2.push({",
+							"    path: path,",
+							"    title: title,",
+							"    meta_description: pm.response.json().choices[0].text",
+							"});",
+							"",
+							"pm.collectionVariables.set(\"tmpDataStep2\", JSON.stringify(tmpDataStep2));",
+							"",
+							"if (pm.info.iteration + 1 === pm.info.iterationCount) {",
+							"",
+							"let csv = 'path,title,meta_description\\n';  // column headers",
+							"",
+							"// iterate over the data array",
+							"tmpDataStep2.forEach(item => {",
+							"    let row = `\"${item.path}\",\"${item.title}\",\"${item.meta_description.trim().replace(/\"/g, '\"\"')}\"\\n`; // each row",
+							"    csv += row;",
+							"});",
+							"",
+							"console.log(csv);  // log the csv data",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ChatGPT_API_Key}}",
 							"type": "string"
 						}
 					]
@@ -27,11 +130,38 @@
 				"method": "POST",
 				"header": [],
 				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"model\": \"text-davinci-003\",\n  \"prompt\": \"Imagine the the following title is a unique experience or event. Create a captivating SEO meta description for it: {{title}}\",\n  \"max_tokens\": 250,\n  \"temperature\": 0.7\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{ChatGPTURL}}/completions",
+					"host": [
+						"{{ChatGPTURL}}"
+					],
+					"path": [
+						"completions"
+					]
+				},
+				"description": "Creates a completion for the provided prompt and parameters."
+			},
+			"response": []
+		},
+		{
+			"name": "Step 3 - Load new meta descriptions back into AEM",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
 					"mode": "formdata",
 					"formdata": [
 						{
 							"key": "jcr:description",
-							"value": "{{meta:description}}",
+							"value": "{{meta_description}}",
 							"type": "default"
 						}
 					]
@@ -47,6 +177,71 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "admin",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "ChatGPTURL",
+			"value": "https://api.openai.com/v1",
+			"type": "string"
+		},
+		{
+			"key": "AEMURL",
+			"value": "localhost:4502",
+			"type": "string"
+		},
+		{
+			"key": "AEMpw",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "AEMuser",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "ChatGPT_API_Key",
+			"value": ""
+		},
+		{
+			"key": "tmpDataStep2",
+			"value": ""
 		}
 	]
 }
