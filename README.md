@@ -28,8 +28,7 @@ Postman collection to Bulk-Update AEM Meta Descriptions.
  * Open a Postman Runner (File -> New Runner Tab), Select your CSV file, Pull Step 3 ... into the runner and uncheck Step 1 & Step 2 in the "Run order" area. 
  * **Input**: CSV file from the previous request. e.g. aem-pages-new-meta-descriptions.csv
 
-## Final Check
-
+## Final Check
 That's it. The last thing to do ist to check on your AEM Author if your new meta descriptions have been updated properly on all the pages.
 
 --
