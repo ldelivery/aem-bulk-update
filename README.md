@@ -35,7 +35,6 @@ Postman collection to Bulk-Update AEM Meta Descriptions.
 
 
 --
-
-[1] [AEM Query Builder API](https://experienceleague.adobe.com/docs/experience-manager-65/developing/platform/query-builder/querybuilder-api.html?lang=en)
-
-[2] [Directlink to create API Key for ChatGPT - Account needed](https://platform.openai.com/account/api-keys)
+**References**
+* [1] [AEM Query Builder API](https://experienceleague.adobe.com/docs/experience-manager-65/developing/platform/query-builder/querybuilder-api.html?lang=en)
+* [2] [Directlink to create API Key for ChatGPT - Account needed](https://platform.openai.com/account/api-keys)
