@@ -1,5 +1,5 @@
 # aem-bulk-update-postman
-Postman collection to Bulk-Update AEM Meta Descriptions.
+Postman collection to Bulk-Update AEM Properties.
 
 **Bonus:** We will generate the new meta descriptions with ChatGPT.
 
