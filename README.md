@@ -1,5 +1,5 @@
 # aem-bulk-update-postman
-Postman collection to Bulk-Update AEM Properties.
+3-Step Postman collection to Bulk-Update AEM Properties.
 
 **Bonus:** We will generate the new meta descriptions with ChatGPT.
 
@@ -9,7 +9,6 @@ Postman collection to Bulk-Update AEM Properties.
 
 ## Step 1 - Extract pages & properties from AEM
  * We are using the Query Builder API to get the pages and properties out of AEM [1]
- * This is the first of three requests in our postman.json
  * **Input**: You need to configure the collection with the following variables: ChatGPTURL, AEMURL, AEMuser, AEMpw
  * **Output**: You get CSV output on the postman console of the pages with the following properties: path,excerpt,name,title,lastModified,created -> Save this output to a file e.g. aem-pages.csv
  
