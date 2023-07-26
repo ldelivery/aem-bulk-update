@@ -22,7 +22,7 @@
 
 
 ## Step 3 - Load new meta descriptions back into AEM
- * We send the new meta descriptions back to AEM using another Postman runner.
+ * We send the new meta descriptions back to AEM using another Postman runner and the Sling Post Servlet [3]
  * Open a Postman Runner (File -> New Runner Tab), Select your CSV file, Pull Step 3 ... into the runner and uncheck Step 1 & Step 2 in the "Run order" area. 
  * **Input**: CSV file from the previous request. e.g. aem-pages-new-meta-descriptions.csv
 
@@ -36,3 +36,4 @@
 **References**
 * [1] [AEM Query Builder API](https://experienceleague.adobe.com/docs/experience-manager-65/developing/platform/query-builder/querybuilder-api.html?lang=en)
 * [2] [Directlink to create API Key for ChatGPT - Account needed](https://platform.openai.com/account/api-keys)
+* [3] [Sling Post Servlet](https://sling.apache.org/documentation/bundles/manipulating-content-the-slingpostservlet-servlets-post.html)
