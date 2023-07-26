@@ -15,7 +15,6 @@
  
 ## Step 2 - Transform page titles into meta descriptions using ChatGPT
  * ChatGPT will create the new descriptions for us, one by one using a Postman Runner.
- * This is the second of three requests in our postman.json
  * You need to configure the request with a valid ChatGPT API Token [2]. To be configured in the "Authorization" Tab, with type "Bearer Token".
  * Open a Postman Runner (File -> New Runner Tab), Select your CSV file, Pull Step 2 ... into the runner and uncheck Step 1 & Step 3 in the "Run order" area. 
  * **Input**: CSV file from the previous request e.g. aem-pages.csv
@@ -24,7 +23,6 @@
 
 ## Step 3 - Load new meta descriptions back into AEM
  * We send the new meta descriptions back to AEM using another Postman runner.
- * This is the third of three requests in our postman.json
  * Open a Postman Runner (File -> New Runner Tab), Select your CSV file, Pull Step 3 ... into the runner and uncheck Step 1 & Step 2 in the "Run order" area. 
  * **Input**: CSV file from the previous request. e.g. aem-pages-new-meta-descriptions.csv
 
