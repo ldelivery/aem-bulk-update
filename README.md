@@ -1,7 +1,7 @@
 # aem-bulk-update-postman
 3-Step Postman collection to Bulk-Update AEM Properties.
 
-**Bonus:** We will generate the new meta descriptions with ChatGPT.
+**Bonus:** We will use ChatGPT.
 
 ## Pre-Requisites
  * Download & Install Postman -> https://www.postman.com/downloads (MacOS, Windows, Linux)
