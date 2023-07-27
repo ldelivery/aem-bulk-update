@@ -10,25 +10,25 @@ The process:
 - can be adapted to update any AEM property based on your requirements.
 - uses the ChatGPT language model to transform page titles into meta descriptions.
 
-## Prerequisites:
+## Prerequisites
 
 1. Download and install [Postman](https://www.postman.com/downloads) on your local machine. It's compatible with MacOS, Windows, and Linux.
 2. Import the `postman.json` file into your Postman application.
 
-## Postman Runner Setup:
+## Postman Runner Setup
 
 For each step, you'll be using the Postman Runner. To do this, go to `File -> New Runner Tab`, select your respective CSV file (it changes per step), pull the corresponding step into the runner and ensure only that step is checked in the "Run order" area.
 
 ## Step 1: Extract Pages & Properties from AEM
 
-This step utilizes the Query Builder API to extract pages and properties from AEM.
+This step utilizes the Query Builder API [1] to extract pages and properties from AEM.
 
 - **Input:** Configure the collection with these variables: `ChatGPTURL`, `AEMURL`, `AEMuser`, `AEMpw`.
 - **Output:** Postman will display a CSV output of the pages with properties including `path`, `excerpt`, `name`, `title`, `lastModified`, and `created`. Save this output to a local file, for example, `aem-pages.csv`.
 
 ## Step 2: Transform Page Titles into Meta Descriptions Using ChatGPT
 
-This step uses ChatGPT to generate new meta descriptions for each page. Our example focuses on meta descriptions, keep in mind that any property could be updated in a similar manner.
+This step uses the ChatGPT API [2] to generate new meta descriptions for each page. Our example focuses on meta descriptions, keep in mind that any property could be updated in a similar manner.
 
 - **Setup:** Configure the request with a valid ChatGPT API Token in the "Authorization" tab, with "Bearer Token" as the type.
 - **Input:** CSV file from the previous step (`aem-pages.csv`).
@@ -36,7 +36,7 @@ This step uses ChatGPT to generate new meta descriptions for each page. Our exam
 
 ## Step 3: Load New Meta Descriptions Back into AEM
 
-We will transfer the new meta descriptions back into AEM via the Sling Post Servlet.
+This step transfers the new meta descriptions back into AEM via the Sling Post Servlet [3].
 
 - **Input:** CSV file from the previous step, i.e., `aem-pages-new-meta-descriptions.csv`.
 
