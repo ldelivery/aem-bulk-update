@@ -8,7 +8,7 @@ The process:
 - makes use of the Postman Runner feature.
 - bulk updates AEM meta description page properties as an example.
 - can be adapted to update any AEM property based on your requirements.
-- uses the ChatGPT language model to transform page titles into meta descriptions.
+- **Bonus:** uses the ChatGPT language model to transform page titles into meta descriptions.
 
 ## Prerequisites
 
