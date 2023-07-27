@@ -19,7 +19,7 @@ The process:
 
 For each step, you'll be using the Postman Runner.
 
-To do this, go to `File -> New Runner Tab`, select your respective CSV file (it changes per step), pull the collection into the runner and ensure only the current step is checked in the "Run order" area.
+To do this, go to `File -> New Runner Tab`, select your respective CSV file (for step 2 & 3), pull the collection into the runner and ensure only the current step is checked in the "Run order" area.
 
 ## Step 1: Extract Pages & Properties from AEM
 
