@@ -1,35 +1,48 @@
-# aem-bulk-update-postman
-3-Step Postman collection to Bulk-Update AEM Properties.
+# AEM Bulk-Update Postman Collection
 
-**Bonus:** We will use ChatGPT.
+This guide describes a classic ETL (Extract, Transform, Load) process for Bulk-Updating Adobe Experience Manager (AEM) properties.
 
-## Pre-Requisites
- * Download & Install Postman -> https://www.postman.com/downloads (MacOS, Windows, Linux)
- * Import postman.json into your local Postman instance
+The process:
+- has four steps.
+- is codified into a Postman collection.
+- makes use of the Postman Runner feature.
+- bulk updates the AEM meta description page property.
+- can be adapted to update any AEM property based on your requirements.
+- uses the ChatGPT language model to transform page titles into meta descriptions.
 
-## Step 1 - Extract pages & properties from AEM
- * We are using the Query Builder API to get the pages and properties out of AEM [1]
- * **Input**: You need to configure the collection with the following variables: ChatGPTURL, AEMURL, AEMuser, AEMpw
- * **Output**: You get CSV output on the postman console of the pages with the following properties: path,excerpt,name,title,lastModified,created -> Save this output to a file e.g. aem-pages.csv
- 
- 
-## Step 2 - Transform page titles into meta descriptions using ChatGPT
- * ChatGPT will create the new descriptions for us, one by one using a Postman Runner.
- * You need to configure the request with a valid ChatGPT API Token [2]. To be configured in the "Authorization" Tab, with type "Bearer Token".
- * Open a Postman Runner (File -> New Runner Tab), Select your CSV file, Pull Step 2 ... into the runner and uncheck Step 1 & Step 3 in the "Run order" area. 
- * **Input**: CSV file from the previous request e.g. aem-pages.csv
- * **Output**: You get CSV output on the postman console of the pages with the properties: title, meta_description -> Save this output to a file e.g. aem-pages-new-meta-descriptions.csv
+## Prerequisites:
 
+1. Download and install [Postman](https://www.postman.com/downloads) on your local machine. It's compatible with MacOS, Windows, and Linux.
+2. Import the `postman.json` file into your Postman application.
 
-## Step 3 - Load new meta descriptions back into AEM
- * We send the new meta descriptions back to AEM using another Postman runner and the Sling Post Servlet [3]
- * Open a Postman Runner (File -> New Runner Tab), Select your CSV file, Pull Step 3 ... into the runner and uncheck Step 1 & Step 2 in the "Run order" area. 
- * **Input**: CSV file from the previous request. e.g. aem-pages-new-meta-descriptions.csv
+## Postman Runner Setup:
 
-## Step 4 - Final Check & Replication
- * The last thing to do is to check if the new meta descriptions have been update in the AEM Author.
- * And of course, replicate all the changed pages to the publish instances.
+For each step, you'll be using the Postman Runner. To do this, go to `File -> New Runner Tab`, select your respective CSV file (it changes per step), pull the corresponding step into the runner and ensure only that step is checked in the "Run order" area.
 
+## Step 1: Extract Pages & Properties from AEM
+
+This step utilizes the Query Builder API to extract pages and properties from AEM.
+
+- **Input:** Configure the collection with these variables: `ChatGPTURL`, `AEMURL`, `AEMuser`, `AEMpw`.
+- **Output:** Postman will display a CSV output of the pages with properties including `path`, `excerpt`, `name`, `title`, `lastModified`, and `created`. Save this output to a local file, for example, `aem-pages.csv`.
+
+## Step 2: Transform Page Titles into Meta Descriptions Using ChatGPT
+
+This step uses ChatGPT to generate new meta descriptions for each page. Our example focuses on meta descriptions, keep in mind that any property could be updated in a similar manner.
+
+- **Setup:** Configure the request with a valid ChatGPT API Token in the "Authorization" tab, with "Bearer Token" as the type.
+- **Input:** CSV file from the previous step (`aem-pages.csv`).
+- **Output:** A CSV output containing pages with `title` and `meta_description` properties will be shown in the Postman console. Save this output to a file, e.g., `aem-pages-new-meta-descriptions.csv`.
+
+## Step 3: Load New Meta Descriptions Back into AEM
+
+We will transfer the new meta descriptions back into AEM via the Sling Post Servlet.
+
+- **Input:** CSV file from the previous step, i.e., `aem-pages-new-meta-descriptions.csv`.
+
+## Step 4: Final Check and Replication
+
+Finally, verify that the new meta descriptions have been updated in the AEM author interface. Subsequently, replicate all the updated pages to the publishing instances.
 
 --
 
