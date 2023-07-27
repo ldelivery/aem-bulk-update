@@ -6,7 +6,7 @@ The process:
 - has four steps.
 - is codified into a Postman collection.
 - makes use of the Postman Runner feature.
-- bulk updates the AEM meta description page property.
+- bulk updates AEM meta description page properties as an example.
 - can be adapted to update any AEM property based on your requirements.
 - uses the ChatGPT language model to transform page titles into meta descriptions.
 
