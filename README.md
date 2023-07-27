@@ -30,13 +30,13 @@ This step utilizes the Query Builder API [1] to extract pages and properties fro
 
 This step uses the ChatGPT API [2] to generate new meta descriptions for each page. Our example focuses on meta descriptions, keep in mind that any property could be updated in a similar manner.
 
-- **Setup:** Configure the request with a valid ChatGPT API Token in the "Authorization" tab, with "Bearer Token" as the type.
+- **Setup:** Configure the request with a valid ChatGPT API Token [3] in the "Authorization" tab, with "Bearer Token" as the type.
 - **Input:** CSV file from the previous step (`aem-pages.csv`).
 - **Output:** A CSV output containing pages with `title` and `meta_description` properties will be shown in the Postman console. Save this output to a file, e.g., `aem-pages-new-meta-descriptions.csv`.
 
 ## Step 3: Load New Meta Descriptions Back into AEM
 
-This step transfers the new meta descriptions back into AEM via the Sling Post Servlet [3].
+This step transfers the new meta descriptions back into AEM via the Sling Post Servlet [4].
 
 - **Input:** CSV file from the previous step, i.e., `aem-pages-new-meta-descriptions.csv`.
 
@@ -48,5 +48,6 @@ Finally, verify that the new meta descriptions have been updated in the AEM auth
 
 **References**
 * [1] [AEM Query Builder API](https://experienceleague.adobe.com/docs/experience-manager-65/developing/platform/query-builder/querybuilder-api.html?lang=en)
-* [2] [Directlink to create API Key for ChatGPT - Account needed](https://platform.openai.com/account/api-keys)
-* [3] [Sling Post Servlet](https://sling.apache.org/documentation/bundles/manipulating-content-the-slingpostservlet-servlets-post.html)
+* [2] [ChatGPT API](https://platform.openai.com/docs/api-reference)
+* [3] [Directlink to create API Key for ChatGPT - Account needed](https://platform.openai.com/account/api-keys)
+* [4] [Sling Post Servlet](https://sling.apache.org/documentation/bundles/manipulating-content-the-slingpostservlet-servlets-post.html)
