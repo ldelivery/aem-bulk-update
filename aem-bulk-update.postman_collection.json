@@ -33,7 +33,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{AEMURL}}/bin/querybuilder.json?type=cq:Page&path=/content/we-retail/language-masters/en/experience&p.limit=-1",
+					"raw": "{{AEMURL}}/bin/querybuilder.json?type=cq:PageContent&path=/content/we-retail/language-masters/en/experience&p.limit=-1&p.hits=selective&p.properties=jcr:path jcr:title jcr:description&p.nodedepth=5",
 					"host": [
 						"{{AEMURL}}"
 					],
@@ -44,7 +44,7 @@
 					"query": [
 						{
 							"key": "type",
-							"value": "cq:Page"
+							"value": "cq:PageContent"
 						},
 						{
 							"key": "path",
@@ -55,14 +55,16 @@
 							"value": "-1"
 						},
 						{
-							"key": "property.value",
-							"value": "%/de/%",
-							"disabled": true
+							"key": "p.hits",
+							"value": "selective"
 						},
 						{
-							"key": "property.operation",
-							"value": "like",
-							"disabled": true
+							"key": "p.properties",
+							"value": "jcr:path jcr:title jcr:description"
+						},
+						{
+							"key": "p.nodedepth",
+							"value": "5"
 						}
 					]
 				}
@@ -89,8 +91,8 @@
 							"    tmpDataStep2 = [];",
 							"}",
 							"let requestBody = JSON.parse(pm.request.body.raw);",
-							"let path = pm.iterationData.get('path');",
-							"let title = pm.iterationData.get('title');",
+							"let path = pm.iterationData.get('jcr:path');",
+							"let title = pm.iterationData.get('jcr:title');",
 							"",
 							"",
 							"tmpDataStep2.push({",
@@ -103,7 +105,7 @@
 							"",
 							"if (pm.info.iteration + 1 === pm.info.iterationCount) {",
 							"",
-							"let csv = 'path,title,meta_description\\n';  // column headers",
+							"let csv = 'jcr:path,jcr:title,jcr:description\\n';  // column headers",
 							"",
 							"// iterate over the data array",
 							"tmpDataStep2.forEach(item => {",
@@ -133,7 +135,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"model\": \"text-davinci-003\",\n  \"prompt\": \"Create a captivating SEO meta description for this title: {{title}}. Adhere to SEO best practices.\",\n  \"max_tokens\": 250,\n  \"temperature\": 0.7\n}",
+					"raw": "{\n  \"model\": \"text-davinci-003\",\n  \"prompt\": \"Create a captivating SEO meta description for this title: {{jcr:title}}. Adhere to SEO best practices.\",\n  \"max_tokens\": 250,\n  \"temperature\": 0.7\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -163,18 +165,15 @@
 					"formdata": [
 						{
 							"key": "jcr:description",
-							"value": "{{meta_description}}",
+							"value": "{{jcr:description}}",
 							"type": "default"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{AEMURL}}{{path}}/jcr:content",
+					"raw": "{{AEMURL}}{{jcr:path}}",
 					"host": [
-						"{{AEMURL}}{{path}}"
-					],
-					"path": [
-						"jcr:content"
+						"{{AEMURL}}{{jcr:path}}"
 					]
 				}
 			},
