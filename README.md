@@ -13,7 +13,7 @@ The process:
 ## Prerequisites
 
 1. Download and install [Postman](https://www.postman.com/downloads) on your local machine. It's compatible with MacOS, Windows, and Linux.
-2. Import the `postman.json` file into your Postman application.
+2. Import the `aem-bulk-update.postman_collection.json` file into your Postman application.
 
 ## Postman Runner Setup
 
