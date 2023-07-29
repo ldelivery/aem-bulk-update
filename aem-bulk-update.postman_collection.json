@@ -1,7 +1,8 @@
 {
 	"info": {
 		"_postman_id": "68e2feb5-dc3a-4f4d-a629-edbc0b26dabc",
-		"name": "AEM Bulk Update",
+		"name": "AEM Bulk-Update Postman Collection",
+		"description": "**GitHub**: [https://github.com/ldelivery/aem-bulk-update-postman]()\n\n---\n\nThis guide describes a classic ETL (Extract, Transform, Load) process for Bulk-Updating Adobe Experience Manager (AEM) properties.\n\nThe process:\n\n- has four steps.\n- is codified into a Postman collection.\n- makes use of the Postman Runner feature.\n- bulk updates AEM meta description page properties as an example.\n- can be adapted to update any AEM property based on your requirements.\n- **Bonus:** uses the ChatGPT language model to transform page titles into meta descriptions.\n    \n\n## Prerequisites\n\n1. Download and install [Postman]() on your local machine. It's compatible with MacOS, Windows, and Linux.\n2. Import the `postman.json` file into your Postman application.\n    \n\n## Postman Runner Setup\n\nFor each step, you'll be using the Postman Runner.\n\nTo do this, go to `File -> New Runner Tab`, select your respective CSV file (for step 2 & 3), pull the collection into the runner and ensure only the current step is checked in the \"Run order\" area.\n\n## Step 1: Extract Pages & Properties from AEM\n\nThis step utilizes the Query Builder API \\[1\\] to extract pages and properties from AEM.\n\n- **Input:** Configure the collection with these variables: `ChatGPTURL`, `AEMURL`, `AEMuser`, `AEMpw`.\n- **Output:** Postman will display a CSV output of the pages with properties including `path`, `excerpt`, `name`, `title`, `lastModified`, and `created`. Save this output to a local file, for example, `aem-pages.csv`.\n    \n\n## Step 2: Transform Page Titles into Meta Descriptions Using ChatGPT\n\nThis step uses the ChatGPT API \\[2\\] to generate new meta descriptions for each page. Our example focuses on meta descriptions, keep in mind that any property could be updated in a similar manner.\n\n- **Setup:** Configure the request with a valid ChatGPT API Token \\[3\\] in the \"Authorization\" tab, with \"Bearer Token\" as the type.\n- **Input:** CSV file from the previous step (`aem-pages.csv`).\n- **Output:** A CSV output containing pages with `title` and `meta_description` properties will be shown in the Postman console. Save this output to a file, e.g., `aem-pages-new-meta-descriptions.csv`.\n    \n\n## Step 3: Load New Meta Descriptions Back into AEM\n\nThis step transfers the new meta descriptions back into AEM via the Sling Post Servlet \\[4\\].\n\n- **Input:** CSV file from the previous step, i.e., `aem-pages-new-meta-descriptions.csv`.\n    \n\n## Step 4: Final Check and Replication\n\nFinally, verify that the new meta descriptions have been updated in the AEM author interface. Subsequently, replicate all the updated pages to the publishing instances.\n\n\\--\n\n**References**\n\n- \\[1\\] [AEM Query Builder API]()\n- \\[2\\] [ChatGPT API]()\n- \\[3\\] [Directlink to create API Key for ChatGPT - Account needed]()\n- \\[4\\] [Sling Post Servlet]()",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28427229"
 	},
@@ -13,12 +14,13 @@
 					"listen": "test",
 					"script": {
 						"exec": [
+							"const delimiter = ','",
 							"const items = pm.response.json().hits",
 							"const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here",
 							"const header = Object.keys(items[0])",
 							"const csv = [",
-							"  header.join(','), // header row first",
-							"  ...items.map(row => header.map(fieldName => row[fieldName], replacer).join(','))",
+							"  header.join(delimiter), // header row first",
+							"  ...items.map(row => header.map(fieldName => \"\\\"\" + row[fieldName] + \"\\\"\" , replacer).join(delimiter))",
 							"].join('\\n')",
 							"",
 							"console.log(csv)"
@@ -31,7 +33,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{AEMURL}}/bin/querybuilder.json?type=cq:Page&path=/content/we-retail/language-masters/en&p.limit=-1",
+					"raw": "{{AEMURL}}/bin/querybuilder.json?type=cq:Page&path=/content/we-retail/language-masters/en/experience&p.limit=-1",
 					"host": [
 						"{{AEMURL}}"
 					],
@@ -46,7 +48,7 @@
 						},
 						{
 							"key": "path",
-							"value": "/content/we-retail/language-masters/en"
+							"value": "/content/we-retail/language-masters/en/experience"
 						},
 						{
 							"key": "p.limit",
@@ -131,7 +133,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"model\": \"text-davinci-003\",\n  \"prompt\": \"Imagine the the following title is a unique experience or event. Create a captivating SEO meta description for it: {{title}}\",\n  \"max_tokens\": 250,\n  \"temperature\": 0.7\n}",
+					"raw": "{\n  \"model\": \"text-davinci-003\",\n  \"prompt\": \"Create a captivating SEO meta description for this title: {{title}}. Adhere to SEO best practices.\",\n  \"max_tokens\": 250,\n  \"temperature\": 0.7\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -237,7 +239,7 @@
 		},
 		{
 			"key": "ChatGPT_API_Key",
-			"value": ""
+			"value": "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\n"
 		},
 		{
 			"key": "tmpDataStep2",
