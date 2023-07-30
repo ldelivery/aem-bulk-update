@@ -26,7 +26,7 @@ To do this, go to `File -> New Runner Tab`, select your respective CSV file (for
 This step utilizes the Query Builder API [1] to extract pages and properties from AEM.
 
 - **Input:** Configure the collection with these variables: `ChatGPTURL`, `AEMURL`, `AEMuser`, `AEMpw`.
-- **Output:** Postman will display a CSV output of the pages with properties including `path`, `excerpt`, `name`, `title`, `lastModified`, and `created`. Save this output to a local file, for example, `aem-pages.csv`.
+- **Output:** Postman will display a CSV output of the pages with properties including `jcr:path`, `jcr:description` and `jcr:title`. Save this output to a local file, for example, `aem-pages.csv`.
 
 ## Step 2: Transform Page Titles into Meta Descriptions Using ChatGPT
 
@@ -34,7 +34,7 @@ This step uses the ChatGPT API [2] to generate new meta descriptions for each pa
 
 - **Setup:** Configure the request with a valid ChatGPT API Token [3] in the "Authorization" tab, with "Bearer Token" as the type.
 - **Input:** CSV file from the previous step (`aem-pages.csv`).
-- **Output:** A CSV output containing pages with `title` and `meta_description` properties will be shown in the Postman console. Save this output to a file, e.g., `aem-pages-new-meta-descriptions.csv`.
+- **Output:** A CSV output containing pages with `jcr:path`, `jcr:description` and `jcr:title` properties will be shown in the Postman console. Save this output to a file, e.g., `aem-pages-new-meta-descriptions.csv`.
 
 ## Step 3: Load New Meta Descriptions Back into AEM
 
